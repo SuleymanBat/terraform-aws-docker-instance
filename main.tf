@@ -36,14 +36,14 @@ data "template_file" "userdata" {
 }
 
 resource "aws_instance" "tfmyec2" {
-    ami = data aws_ami.amazon-linux-2.id 
-    instance_type = var.instance_type
-    count = var.num_of_instance
-    key_name = var.key_name
-    vpc_security_group_ids = [aws_security_group.tf-sec-gr.id]
-    user_data = data.template_file.userdata.rendered
-    tags = {
-      Name = var.tag
+  ami = data.aws_ami.amazon-linux-2.id
+  instance_type = var.instance_type
+  count = var.num_of_instance
+  key_name = var.key_name
+  vpc_security_group_ids = [aws_security_group.tf-sec-gr.id]
+  user_data = data.template_file.userdata.rendered
+  tags = {
+    Name = var.tag
   }
 }
 
@@ -53,7 +53,7 @@ resource "aws_security_group" "tf-sec-gr" {
     Name = var.tag
   }
 
-dynamic "ingress" {
+  dynamic "ingress" {
     for_each = var.docker-instance-ports
     iterator = port
     content {
@@ -70,4 +70,4 @@ dynamic "ingress" {
     to_port =0
     cidr_blocks = ["0.0.0.0/0"]
   }
-} 
+}
